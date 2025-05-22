@@ -96,7 +96,7 @@ source devel/setup.bash
 ### 6. Launch the Fetch Robot Simulation
 
 ```bash
-roslaunch fetch_gazebo_demo demo.launch
+roslaunch fetch_gazebo simulation.launch
 ```
 
 Wait until Gazebo and the robot are fully initialized.
