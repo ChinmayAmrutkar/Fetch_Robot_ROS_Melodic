@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="fetch_world">
+
+    <!-- Ground Plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Sunlight -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Wood Cube (10cm) -->
+    <include>
+      <uri>model://wood_cube_10cm</uri>
+      <pose>3 2 0 0 0 0</pose>
+    </include>
+
+    <!-- Coke Can -->
+    <include>
+      <uri>model://coke_can</uri>
+      <pose>4.0 2 0 0 0 0</pose>
+    </include>
+
+    <!-- Cardboard Box -->
+    <include>
+      <uri>model://cardboard_box</uri>
+      <pose>5 0 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
+
