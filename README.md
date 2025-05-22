@@ -6,6 +6,7 @@ This repository contains a ROS-based modular control system for the **Fetch robo
 - ✅ Orienting the robot head to look at a 3D point  
 - ✅ Full 6-DOF Cartesian control of the arm using MoveIt (with roll-pitch-yaw support)  
 - ✅ Move robot arm to "home/tuck" position  
+- ✅ Gripper open/close control via action client
 
 ---
 
@@ -18,7 +19,7 @@ fetch_ws/
 │       ├── scripts/
 │       │   ├── go_to_point.py           # Base velocity controller
 │       │   ├── look_at_point.py         # Head gaze controller using PointHeadAction
-│       │   └── moveit_arm_control.py    # 6-DOF arm pose + joint pose + tuck
+│       │   └── moveit_arm_control.py    # 6-DOF arm pose + tuck + gripper control
 │       ├── worlds/
 │       │   └── random_objects.world     # Custom Gazebo world with blocks and cubes
 │       ├── launch/
@@ -41,7 +42,8 @@ fetch_ws/
 sudo apt install -y \
   ros-melodic-fetch-gazebo \
   ros-melodic-fetch-gazebo-demo \
-  ros-melodic-fetch-moveit-config
+  ros-melodic-fetch-moveit-config \
+  ros-melodic-control-msgs
 ```
 
 ---
@@ -82,11 +84,19 @@ This loads:
 - A custom Gazebo world (`random_objects.world`)
 - Fetch robot with full sensors and controllers
 
+### Step 2: Start MoveIt! for Arm Control
+
+```bash
+roslaunch fetch_moveit_config move_group.launch
+```
+
+Required for enabling motion planning with MoveIt.
+
 ---
 
-### Step 2: Use Individual Controllers
+## 🎮 Use Individual Controllers
 
-#### ➤ 1. Base Navigation Controller
+### ➤ 1. Base Navigation Controller
 
 ```bash
 rosrun fetch_position_controller go_to_point.py
@@ -98,9 +108,7 @@ Enter goal x: 1.5
 Enter goal y: 0.5
 ```
 
-The robot will navigate using velocity control to the target pose.
-
-#### ➤ 2. Head Gaze Controller
+### ➤ 2. Head Gaze Controller
 
 ```bash
 rosrun fetch_position_controller look_at_point.py
@@ -111,23 +119,21 @@ Prompts:
 Enter point to look at (x, y, z):
 ```
 
-Sends a gaze goal to the head controller using `PointHeadAction`.
-
-#### ➤ 3. MoveIt Arm Controller
+### ➤ 3. MoveIt Arm + Gripper Controller
 
 ```bash
 rosrun fetch_position_controller moveit_arm_control.py
 ```
 
 You can select from:
+
 ```
 Choose mode:
 [1] Go to Cartesian pose (x, y, z, roll, pitch, yaw)
 [2] Go to tucked (home) joint pose
+[3] Open gripper
+[4] Close gripper
 ```
-
-- **Option 1**: Sends full 6-DOF Cartesian pose using roll-pitch-yaw (RPY) → quaternion  
-- **Option 2**: Sends robot arm to a tucked joint configuration (Home Position)
 
 ---
 
@@ -137,17 +143,21 @@ Choose mode:
 |------|------------|
 | `go_to_point.py` | `/odom`, `/base_controller/command` |
 | `look_at_point.py` | `/head_controller/point_head/goal` |
-| `moveit_arm_control.py` | `/arm_controller/follow_joint_trajectory`, `/joint_states`, TF |
+| `moveit_arm_control.py` | `/arm_controller/follow_joint_trajectory`, `/gripper_controller/gripper_action`, `/joint_states`, TF |
 
-To get current end-effector pose:
-```bash
-rosrun tf tf_echo base_link wrist_roll_link
-```
+---
 
-To see joint states:
-```bash
-rostopic echo /joint_states
-```
+## 🛠️ Helpful Tools
+
+- To get current end-effector pose:
+  ```bash
+  rosrun tf tf_echo base_link wrist_roll_link
+  ```
+
+- To see joint states:
+  ```bash
+  rostopic echo /joint_states
+  ```
 
 ---
 
@@ -157,12 +167,12 @@ rostopic echo /joint_states
 - [x] Point head to 3D location  
 - [x] Move arm to 6-DOF Cartesian target (x, y, z, RPY)  
 - [x] Go to custom joint-space home/tucked pose  
+- [x] Open and close gripper via action client
 
 ---
 
 ## 🔜 Upcoming Tasks
 
-- [ ] Gripper control (open/close fingers with force/position)  
 - [ ] Pick and place pipeline using perception and arm + gripper  
 - [ ] Object recognition and pose estimation for manipulation  
 - [ ] Full pick-and-place demo with head, arm, and gripper coordination  
