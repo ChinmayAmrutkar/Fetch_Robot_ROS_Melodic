@@ -5,7 +5,7 @@ This repository contains a ROS-based modular control system for the **Fetch robo
 - ✅ Navigation to a 2D goal using velocity control  
 - ✅ Orienting the robot head to look at a 3D point  
 - ✅ Full 6-DOF Cartesian control of the arm using MoveIt (with roll-pitch-yaw support)  
-- ✅ Manual "home/tuck" joint-space reset of the arm  
+- ✅ Move robot arm to "home/tuck" position  
 
 ---
 
@@ -156,7 +156,7 @@ rostopic echo /joint_states
 - [x] Go to arbitrary 2D base position  
 - [x] Point head to 3D location  
 - [x] Move arm to 6-DOF Cartesian target (x, y, z, RPY)  
-- [x] Go to custom joint-space tucked pose  
+- [x] Go to custom joint-space home/tucked pose  
 
 ---
 
