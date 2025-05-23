@@ -6,7 +6,8 @@ This repository contains a ROS-based modular control system for the **Fetch robo
 - ✅ Orienting the robot head to look at a 3D point  
 - ✅ Full 6-DOF Cartesian control of the arm using MoveIt (with roll-pitch-yaw support)  
 - ✅ Move robot arm to "home/tuck" position  
-- ✅ Gripper open/close control via action client
+- ✅ Gripper open/close control via action client  
+- ✅ Basic pick and place at a known object location
 
 ---
 
@@ -19,7 +20,8 @@ fetch_ws/
 │       ├── scripts/
 │       │   ├── go_to_point.py           # Base velocity controller
 │       │   ├── look_at_point.py         # Head gaze controller using PointHeadAction
-│       │   └── moveit_arm_control.py    # 6-DOF arm pose + tuck + gripper control
+│       │   ├── moveit_arm_control.py    # 6-DOF arm pose + tuck + gripper control
+│       │   └── pick_and_place.py        # Pick and place routine for fixed objects
 │       ├── worlds/
 │       │   └── random_objects.world     # Custom Gazebo world with blocks and cubes
 │       ├── launch/
@@ -135,6 +137,18 @@ Choose mode:
 [4] Close gripper
 ```
 
+### ➤ 4. Pick and Place Demo
+
+```bash
+rosrun fetch_position_controller pick_and_place.py
+```
+
+Performs an automated **pick and place** operation:
+- Moves the base to a known object (e.g., small cylinder on a blue cube)
+- Grasps it using the arm and gripper
+- Moves back and places the object at a defined drop location  
+This uses hardcoded known coordinates for both pickup and placement poses (no vision yet).
+
 ---
 
 ## 📡 ROS Topics Used
@@ -144,6 +158,7 @@ Choose mode:
 | `go_to_point.py` | `/odom`, `/base_controller/command` |
 | `look_at_point.py` | `/head_controller/point_head/goal` |
 | `moveit_arm_control.py` | `/arm_controller/follow_joint_trajectory`, `/gripper_controller/gripper_action`, `/joint_states`, TF |
+| `pick_and_place.py` | All above + MoveIt PlanningScene interface |
 
 ---
 
@@ -167,7 +182,8 @@ Choose mode:
 - [x] Point head to 3D location  
 - [x] Move arm to 6-DOF Cartesian target (x, y, z, RPY)  
 - [x] Go to custom joint-space home/tucked pose  
-- [x] Open and close gripper via action client
+- [x] Open and close gripper via action client  
+- [x] Pick and place at a fixed known location using coordinated base, arm, and gripper actions
 
 ---
 
