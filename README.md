@@ -133,8 +133,7 @@ You can select from:
 Choose mode:
 [1] Go to Cartesian pose (x, y, z, roll, pitch, yaw)
 [2] Go to tucked (home) joint pose
-[3] Open gripper
-[4] Close gripper
+[3] Open or Close gripper
 ```
 
 ### ➤ 4. Pick and Place Demo
