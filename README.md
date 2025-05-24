@@ -151,6 +151,9 @@ This uses hardcoded known coordinates for both pickup and placement poses (no vi
 
 ---
 
+https://github.com/user-attachments/assets/b5797d94-19a0-4ef0-ad07-d5d623078d96
+
+
 ## 📡 ROS Topics Used
 
 | Node | Key Topics |
