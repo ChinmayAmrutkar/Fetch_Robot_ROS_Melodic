@@ -1,0 +1,48 @@
+<!-- This launch file is for localizing the Fetch robot using a pre-made map -->
+<launch>
+    <!-- Arguments -->
+    <arg name="map_file" default="$(find fetch_amcl_project)/maps/playground_map.yaml"/>
+    <arg name="open_rviz" default="true"/>
+    <arg name="log_file_name" default="amcl_vs_truth.csv"/>
+
+    <!-- 1. Launch the Fetch robot in the playground world -->
+    <include file="$(find fetch_gazebo)/launch/playground.launch"/>
+
+    <!-- 2. Run the Map Server -->
+    <!-- This serves up the map you created to the rest of the ROS system -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+    <!-- 3. Run the AMCL Node -->
+    <!-- This is the core localization algorithm -->
+    <node name="amcl" pkg="amcl" type="amcl" output="screen">
+        <remap from="scan" to="base_scan"/>
+        <param name="odom_frame_id" value="odom"/>
+        <param name="base_frame_id" value="base_link"/>
+        <param name="global_frame_id" value="map"/>
+        <param name="min_particles" value="500"/>
+        <param name="max_particles" value="5000"/>
+        <param name="update_min_d" value="0.2"/>
+        <param name="update_min_a" value="0.3"/> <!-- Radians -->
+        <param name="initial_pose_x" value="0.0"/>
+        <param name="initial_pose_y" value="0.0"/>
+        <param name="initial_pose_a" value="0.0"/>
+        <param name="laser_model_type" value="likelihood_field"/>
+        <param name="laser_z_hit" value="0.95"/>
+        <param name="laser_z_rand" value="0.05"/>
+        <param name="laser_sigma_hit" value="0.2"/>
+    </node>
+
+    <!-- 4. Start the Pose Logger Node -->
+    <!-- This runs our Python script to save pose data to a CSV file -->
+    <node name="pose_logger" pkg="fetch_amcl_project" type="log_poses.py" output="screen">
+        <param name="log_file" value="$(env HOME)/$(arg log_file_name)"/>
+    </node>
+
+    <!-- 5. Run RViz for visualization -->
+    <group if="$(arg open_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz_amcl"
+              args="-d $(find fetch_amcl_project)/rviz/amcl_config.rviz"/>
+    </group>
+
+</launch>
+
