@@ -133,8 +133,7 @@ You can select from:
 Choose mode:
 [1] Go to Cartesian pose (x, y, z, roll, pitch, yaw)
 [2] Go to tucked (home) joint pose
-[3] Open gripper
-[4] Close gripper
+[3] Open or Close gripper
 ```
 
 ### ➤ 4. Pick and Place Demo
@@ -150,6 +149,9 @@ Performs an automated **pick and place** operation:
 This uses hardcoded known coordinates for both pickup and placement poses (no vision yet).
 
 ---
+
+https://github.com/user-attachments/assets/b5797d94-19a0-4ef0-ad07-d5d623078d96
+
 
 ## 📡 ROS Topics Used
 
