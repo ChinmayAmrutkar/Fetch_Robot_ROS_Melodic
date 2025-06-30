@@ -1,4 +1,4 @@
-# 🦾 Fetch Robot Control Suite (ROS Melodic - Ubuntu 18.04)
+# 🦾 Fetch Robot Control and Localization Suite (ROS Melodic - Ubuntu 18.04)
 
 This repository contains a ROS-based modular control system for the **Fetch robot** in simulation. It allows for:
 
